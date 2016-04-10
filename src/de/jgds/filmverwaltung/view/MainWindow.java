@@ -3,8 +3,6 @@ package de.jgds.filmverwaltung.view;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.SwingConstants;
 
 public class MainWindow extends JFrame{
@@ -20,6 +18,9 @@ public class MainWindow extends JFrame{
 		
 		JLabel lblLinks = new JLabel("Links");
 		getContentPane().add(lblLinks, BorderLayout.WEST);
+		
+		JLabel lblHalloHierOben = new JLabel("Hallo hier oben");
+		getContentPane().add(lblHalloHierOben, BorderLayout.NORTH);
 		
 		setVisible(true);
 	}
