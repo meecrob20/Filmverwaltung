@@ -26,6 +26,7 @@ public class MainWindow extends JFrame {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private JTextField txtSuche;
 	private JButton btnAddWatchlist;
+	private JButton btnFilmHinzufuegen;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Constructor
@@ -42,8 +43,8 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 987, 490);
 
-		JLabel lblName = new JLabel("NAME");
-		lblName.setFont(new Font("Tahoma", Font.BOLD, 35));
+		JLabel lblName = new JLabel("Maya+David+Dannys Programm");
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblName.setForeground(Color.CYAN);
 
 		txtSuche = new JTextField();
@@ -136,6 +137,13 @@ public class MainWindow extends JFrame {
 		
 	}
 
+	
+	public JButton getBtnFilmHinzufuegen() {
+		return btnFilmHinzufuegen;
+	}
+	
+	
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Get-Methode für den AddWatchlist Button
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,4 +158,4 @@ public class MainWindow extends JFrame {
 		return txtSuche;
 	}
 
-}
+}///////////////////////////

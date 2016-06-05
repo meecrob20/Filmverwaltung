@@ -3,6 +3,7 @@ package de.jgds.filmverwaltung.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import de.jgds.filmverwaltung.view.AddMovieDialog;
 import de.jgds.filmverwaltung.view.MainWindow;
 
 public class Controller implements ActionListener {
@@ -10,8 +11,10 @@ public class Controller implements ActionListener {
 	// Attribute
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private MainWindow window;
-
+	private AddMovieDialog dialog;
+ 
 	private static Controller instance = null;
+	
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Konstruktor
@@ -47,12 +50,18 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Action performed");
-		if (e.getSource() == window.getBtnAddWatchlist()) {
-			System.out.println("Add Button");
+		if (e.getSource() == window.getBtnFilmHinzufuegen()) {
+			AddMovieDialog dialog = new AddMovieDialog();
 		} else {
 			System.out.println("anderer Button wurde gedrückt");
+			
 		}
 	}
+	
+	
 
-}
+	
+
+	
+	
+}////////////////////////////////
