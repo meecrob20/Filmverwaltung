@@ -1,6 +1,6 @@
 package de.jgds.filmverwaltung.view;
 
-import java.awt.Color;
+import java.awt.Color;		
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,28 +16,32 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import de.jgds.filmverwaltung.controller.Controller;
-import javax.swing.JRadioButton;
-import java.awt.BorderLayout;
 
+/**
+ * 
+ * @author Danny
+ *
+ */
 public class MainWindow extends JFrame {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Attribute
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private JTextField txtSuche;
+	private JTextField txtSearch;
+	private JButton btnRemoveWatchlist;
 	private JButton btnAddWatchlist;
-	private JButton btnFilmHinzufuegen;
+	private JButton btnAddMovie;
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Constructor
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 
+	 */
 	public MainWindow() {
-		//this.init(); //Notwendig damit Der Designer die GUI anzeigt
+		//this.init(); //Notwendig damit der Designer die GUI anzeigt
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Diese Methode initialisiert und kreiert die Komponenten der GUI
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Diese Methode initialisiert und kreiert die Komponenten der GUI
+	 */
 	public void init() {
 		setTitle("Filmverwaltung");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -47,12 +51,13 @@ public class MainWindow extends JFrame {
 		lblName.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblName.setForeground(Color.CYAN);
 
-		txtSuche = new JTextField();
-		txtSuche.setForeground(Color.LIGHT_GRAY);
-		txtSuche.setText("Suche");
-		txtSuche.setColumns(10);
+		txtSearch = new JTextField();
+		txtSearch.setForeground(Color.LIGHT_GRAY);
+		txtSearch.setText("Suche");
+		txtSearch.setColumns(10);
 
-		JButton btnFilmHinzufuegen = new JButton("Film Hinzufuegen");
+		btnAddMovie = new JButton("Film Hinzufuegen");
+		btnAddMovie.addActionListener(Controller.getInstance());
 
 		JPanel panel = new JPanel();
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -60,9 +65,9 @@ public class MainWindow extends JFrame {
 				.createSequentialGroup()
 				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(lblName))
-						.addGroup(groupLayout.createSequentialGroup().addGap(20).addComponent(txtSuche,
+						.addGroup(groupLayout.createSequentialGroup().addGap(20).addComponent(txtSearch,
 								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-				.addPreferredGap(ComponentPlacement.RELATED, 165, Short.MAX_VALUE).addComponent(btnFilmHinzufuegen)
+				.addPreferredGap(ComponentPlacement.RELATED, 165, Short.MAX_VALUE).addComponent(btnAddMovie)
 				.addGap(36))
 				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
 						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE).addContainerGap()));
@@ -70,9 +75,9 @@ public class MainWindow extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup().addGap(11)
 						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtSuche, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(txtSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnFilmHinzufuegen))
+								.addComponent(btnAddMovie))
 						.addGap(73).addComponent(panel, GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
 						.addContainerGap()));
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -86,13 +91,13 @@ public class MainWindow extends JFrame {
 		elemente[0] = "A";
 		elemente[1] = "A";
 		elemente[2] = "A";
-		JList list = new JList(elemente);
-		GridBagConstraints gbc_list = new GridBagConstraints();
-		gbc_list.fill = GridBagConstraints.BOTH;
-		gbc_list.insets = new Insets(0, 0, 0, 5);
-		gbc_list.gridx = 0;
-		gbc_list.gridy = 0;
-		panel.add(list, gbc_list);
+		JList listMovie = new JList(elemente);
+		GridBagConstraints gbc_listMovie = new GridBagConstraints();
+		gbc_listMovie.fill = GridBagConstraints.BOTH;
+		gbc_listMovie.insets = new Insets(0, 0, 0, 5);
+		gbc_listMovie.gridx = 0;
+		gbc_listMovie.gridy = 0;
+		panel.add(listMovie, gbc_listMovie);
 
 		JPanel panel_1 = new JPanel();
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
@@ -105,8 +110,10 @@ public class MainWindow extends JFrame {
 		btnAddWatchlist = new JButton("Hinzuf\u00FCgen Watchlist");
 		btnAddWatchlist.addActionListener(Controller.getInstance());
 
-		JButton btnRemoveWatchlist = new JButton("Entfernen von Watchlist");
+		btnRemoveWatchlist = new JButton("Entfernen von Watchlist");
 		btnRemoveWatchlist.addActionListener(Controller.getInstance());
+		
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup().addGap(43)
@@ -124,12 +131,12 @@ public class MainWindow extends JFrame {
 						.addGap(126)));
 		panel_1.setLayout(gl_panel_1);
 
-		JList list_1 = new JList(new String[] { "A", "A", "A" });
-		GridBagConstraints gbc_list_1 = new GridBagConstraints();
-		gbc_list_1.fill = GridBagConstraints.BOTH;
-		gbc_list_1.gridx = 2;
-		gbc_list_1.gridy = 0;
-		panel.add(list_1, gbc_list_1);
+		JList list_Watchlist = new JList(new String[] { "A", "A", "A" });
+		GridBagConstraints gbc_list_Watchlist = new GridBagConstraints();
+		gbc_list_Watchlist.fill = GridBagConstraints.BOTH;
+		gbc_list_Watchlist.gridx = 2;
+		gbc_list_Watchlist.gridy = 0;
+		panel.add(list_Watchlist, gbc_list_Watchlist);
 		getContentPane().setLayout(groupLayout);
 
 		setVisible(true);
@@ -138,24 +145,39 @@ public class MainWindow extends JFrame {
 	}
 
 	
-	public JButton getBtnFilmHinzufuegen() {
-		return btnFilmHinzufuegen;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public JButton getBtnRemoveWatchlist(){
+		return btnRemoveWatchlist;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public JButton getBtnAddMovie() {
+		return btnAddMovie;
 	}
 	
 	
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Get-Methode für den AddWatchlist Button
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 
+	 * @return
+	 */
 	public JButton getBtnAddWatchlist() {
 		return btnAddWatchlist;
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Get-Methode für das Textfeld "Suche"
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 
+	 * @return
+	 */
 	public JTextField getTxtSuche() {
-		return txtSuche;
+		return txtSearch;
 	}
+
 
 }///////////////////////////
