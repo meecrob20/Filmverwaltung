@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import de.jgds.filmverwaltung.controller.Controller;
+import de.jgds.filmverwaltung.model.Film;
 
 /**
  * 
@@ -87,11 +90,9 @@ public class MainWindow extends JFrame {
 		gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panel);
 
-		String[] elemente = new String[3];
-		elemente[0] = "A";
-		elemente[1] = "A";
-		elemente[2] = "A";
-		JList listMovie = new JList(elemente);
+		ArrayList<Film> allFilms = Controller.getInstance().getAlleFilme(); 
+		ArrayList<Film> allFilmsOnWatchlist = Controller.getInstance().getAlleWatchlistFilme(); 
+		JList listMovie = new JList(allFilmsOnWatchlist.toArray());
 		GridBagConstraints gbc_listMovie = new GridBagConstraints();
 		gbc_listMovie.fill = GridBagConstraints.BOTH;
 		gbc_listMovie.insets = new Insets(0, 0, 0, 5);
@@ -131,7 +132,7 @@ public class MainWindow extends JFrame {
 						.addGap(126)));
 		panel_1.setLayout(gl_panel_1);
 
-		JList list_Watchlist = new JList(new String[] { "A", "A", "A" });
+		JList list_Watchlist = new JList(allFilms.toArray());
 		GridBagConstraints gbc_list_Watchlist = new GridBagConstraints();
 		gbc_list_Watchlist.fill = GridBagConstraints.BOTH;
 		gbc_list_Watchlist.gridx = 2;

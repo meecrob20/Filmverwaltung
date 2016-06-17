@@ -2,7 +2,9 @@ package de.jgds.filmverwaltung.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import de.jgds.filmverwaltung.model.Film;
 import de.jgds.filmverwaltung.view.AddMovieDialog;
 import de.jgds.filmverwaltung.view.MainWindow;
 
@@ -92,6 +94,20 @@ public class Controller implements ActionListener {
 	 */
 	private void addMovie() {
 		AddMovieDialog dialog = new AddMovieDialog(this);
+	}
+	
+	public ArrayList<Film> getAlleFilme(){
+		return DbController.getInstance().getAlleFilme();
+	}
+
+	public ArrayList<Film> getAlleWatchlistFilme() {
+		ArrayList<Film> watchlist = new ArrayList<>();
+		for (Film f : getAlleFilme()){
+			if (f.isOnWatchlist()){
+				watchlist.add(f);
+			}
+		}
+		return watchlist;
 	}
 
 }////////////////////////////////
