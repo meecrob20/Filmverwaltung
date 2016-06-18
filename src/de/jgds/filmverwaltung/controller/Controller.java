@@ -64,15 +64,21 @@ public class Controller implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == window.getBtnAddMovie()) {
-			addMovie();
+			openAddMovieDialog();
 		} else if (e.getSource() == window.getBtnAddWatchlist()) {
 			addWatchlist();
 		} else if (e.getSource() == window.getBtnRemoveWatchlist()) {
 			removeWatchlist();
+		} else if (e.getSource() == dialog.getBtnAddMovie()) {
+			addMovie();
 		} else {
-			System.out.println("anderer Button wurde gedrückt");
+			System.out.println("nichts passiert");
 		}
 
+	}
+
+	private void addMovie() {
+		System.out.println("Film wird hinzugefügt");
 	}
 
 	/**
@@ -92,18 +98,18 @@ public class Controller implements ActionListener {
 	/**
 	 * 
 	 */
-	private void addMovie() {
-		AddMovieDialog dialog = new AddMovieDialog(this);
+	private void openAddMovieDialog() {
+	dialog = new AddMovieDialog(this);
 	}
-	
-	public ArrayList<Film> getAlleFilme(){
+
+	public ArrayList<Film> getAlleFilme() {
 		return DbController.getInstance().getAlleFilme();
 	}
 
 	public ArrayList<Film> getAlleWatchlistFilme() {
 		ArrayList<Film> watchlist = new ArrayList<>();
-		for (Film f : getAlleFilme()){
-			if (f.isOnWatchlist()){
+		for (Film f : getAlleFilme()) {
+			if (f.isOnWatchlist()) {
 				watchlist.add(f);
 			}
 		}

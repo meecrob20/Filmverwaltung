@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.jgds.filmverwaltung.view;
 
 import javax.swing.JDialog;
@@ -14,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Color;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
@@ -28,10 +26,13 @@ import javax.swing.JScrollPane;
  *
  */
 public class AddMovieDialog extends JDialog {
-	private JTextField txtTitel;
 	private Controller controller;
+	private JTextField txtTitel;
+	private JTextArea taDescription;
 	private final ButtonGroup buttonGroupRating = new ButtonGroup();
 	private final ButtonGroup buttonGroupYN = new ButtonGroup();
+	private JButton btnAddMovie;
+	
 
 	
 	/**
@@ -49,11 +50,11 @@ public class AddMovieDialog extends JDialog {
  * 
  */
 	private void init() {
-		setTitle("Filme Hinzuf\u00FCgen");
+		setTitle("Filme Hinzufügen");
 
 		setBounds(700, 200, 400, 700);
 
-		JLabel lblAddMovie = new JLabel("F\u00FCge einen Film hinzu");
+		JLabel lblAddMovie = new JLabel("Füge einen Film hinzu");
 		getContentPane().add(lblAddMovie, BorderLayout.NORTH);
 
 		JPanel panel = new JPanel();
@@ -114,9 +115,9 @@ public class AddMovieDialog extends JDialog {
 						.addComponent(scrpDescription, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
 						.addContainerGap()));
 
-		JTextArea taDescription = new JTextArea();
+		taDescription = new JTextArea();
 		taDescription.setForeground(Color.LIGHT_GRAY);
-		taDescription.setText("taDescription");
+		taDescription.setText("Description");
 		scrpDescription.setViewportView(taDescription);
 		panel_4.setLayout(gl_panel_4);
 
@@ -153,6 +154,16 @@ public class AddMovieDialog extends JDialog {
 
 		JPanel panel_5 = new JPanel();
 		panel_1.add(panel_5);
+		GroupLayout gl_panel_5 = new GroupLayout(panel_5);
+		gl_panel_5.setHorizontalGroup(
+			gl_panel_5.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 323, Short.MAX_VALUE)
+		);
+		gl_panel_5.setVerticalGroup(
+			gl_panel_5.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 126, Short.MAX_VALUE)
+		);
+		panel_5.setLayout(gl_panel_5);
 
 		JPanel panel_6 = new JPanel();
 		panel_1.add(panel_6);
@@ -175,16 +186,36 @@ public class AddMovieDialog extends JDialog {
 								.addContainerGap(52, Short.MAX_VALUE)));
 		panel_6.setLayout(gl_panel_6);
 
-		JButton btnAddMovie = new JButton("Film Hinzuf\u00FCgen");
-		btnAddMovie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnAddMovie.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		btnAddMovie = new JButton("Film Hinzufügen");
+		btnAddMovie.addActionListener(Controller.getInstance());
+		
 		getContentPane().add(btnAddMovie, BorderLayout.SOUTH);
 		setResizable(false);
 		setModal(true);
 		setVisible(true);
-
+	
 	}
+	
+	public JButton getBtnAddMovie(){
+		
+		return this.btnAddMovie;
+	}
+	
+	
+	public String getTitel() {
+		
+		return this.txtTitel.getText();
+	}
+	 
+	public String getDescription(){
+		return this.taDescription.getText();
+	}
+	
+	public String getRating() {
+		
+	ButtonModel rating = this.buttonGroupRating.getSelection();
+	String sRating = rating.toString();
+	return sRating;
+	}
+	
 }//////////////////////////////////////
