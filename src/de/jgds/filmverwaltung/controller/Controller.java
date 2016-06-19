@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import de.jgds.filmverwaltung.model.Film;
 import de.jgds.filmverwaltung.view.AddMovieDialog;
 import de.jgds.filmverwaltung.view.MainWindow;
@@ -78,12 +81,29 @@ public class Controller implements ActionListener {
 	}
 
 	private void addMovie() {
-		System.out.println("Titel: " + dialog.getTitel());
-		System.out.println("Beschreibung: " + dialog.getDescription());
-		System.out.println("Bewertung: " + dialog.getRating());
-		System.out.println("Genre: " + dialog.getGenre());
-		System.out.println("Gesehen? " + dialog.getSeen());
-	
+		DbController dbc = DbController.getInstance();
+		Film f = new Film();
+		f.setName(dialog.getTitel());
+		f.setDescription(dialog.getDescription());
+		f.setRating(dialog.getRating());
+		f.setGenre(dialog.getGenre());
+		f.setOnWatchlist(dialog.getSeen());
+		dbc.createFilm(f);
+		
+		this.refreshLists();
+		JOptionPane.showMessageDialog(dialog,"Film Hinzugefügt!");
+		
+	}
+
+	private void refreshLists() {
+		ArrayList<Film> allFilms = Controller.getInstance().getAlleFilme();
+		ArrayList<Film> allFilmsOnWatchlist = Controller.getInstance().getAlleWatchlistFilme();
+		
+		JList listMovie = new JList(allFilmsOnWatchlist.toArray());
+		JList list_Watchlist = new JList(allFilms.toArray());
+		
+		window.setListMovie(listMovie);
+		window.setList_Watchlist(list_Watchlist);
 	}
 
 	/**

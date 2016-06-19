@@ -29,7 +29,7 @@ public class DbController {
 	private void initDBConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:test.db");
+			c = DriverManager.getConnection("jdbc:sqlite:Film.db");
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
@@ -41,7 +41,9 @@ public class DbController {
 				String sql = "CREATE TABLE Film " 
 						+ "(Id INTEGER PRIMARY KEY AUTOINCREMENT    NOT NULL,"
 						+ " Name           TEXT    NOT NULL, " 
+						+ " Description		TEXT	NOT NULL, "
 						+ " Rating           INT     NOT NULL,"
+						+ " Genre			TEXT	NOT NULL, "
 						+ " onWatchlist		BOOLEAN		NOT NULL)";
 				stmt.executeUpdate(sql);
 				stmt.close();
@@ -71,8 +73,10 @@ public class DbController {
 		DbController dbc = DbController.getInstance();
 		Film f = new Film();
 		f.setName("Test Film");
+		f.setDescription("TEST");
 		f.setRating(1);
-		f.setOnWatchlist(true);;
+		f.setGenre("TESTTTT");
+		f.setOnWatchlist(true);
 		dbc.createFilm(f);
 		for (Film film : dbc.getAlleFilme()){
 			System.out.println(film);
@@ -81,12 +85,14 @@ public class DbController {
 	
 	public void createFilm(Film neuerFilm){
 		try {
-			String sql = "INSERT INTO Film (Name, Bewertung, onWatchlist) VALUES (?, ?, ?);";
+			String sql = "INSERT INTO Film (Name, Description, Rating, Genre, onWatchlist) VALUES (?, ?, ?, ?, ?);";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			//ID soll von der Datenbank generiert werden
 			stmt.setString(1, neuerFilm.getName());
-			stmt.setInt(2, neuerFilm.getRating());
-			stmt.setBoolean(3, neuerFilm.isOnWatchlist());
+			stmt.setString(2, neuerFilm.getDescription());
+			stmt.setInt(3, neuerFilm.getRating());
+			stmt.setString(4, neuerFilm.getGenre());
+			stmt.setBoolean(5, neuerFilm.isOnWatchlist());
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -97,13 +103,15 @@ public class DbController {
 	
 	public void updateFilm(Film film){
 		try {
-			String sql = "UPDATE Film SET Name=? , Bewertung=?, onWatchlist=? WHERE ID = ?;";
+			String sql = "UPDATE Film SET Name=?, Description=?, Rating=?, Genre=?, onWatchlist=? WHERE ID = ?;";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			//ID soll von der Datenbank generiert werden
 			stmt.setString(1, film.getName());
-			stmt.setInt(2, film.getRating());
-			stmt.setBoolean(3, film.isOnWatchlist());
-			stmt.setInt(4, film.getId());
+			stmt.setString(2, film.getDescription());
+			stmt.setInt(3, film.getRating());
+			stmt.setString(4, film.getGenre());
+			stmt.setBoolean(5, film.isOnWatchlist());
+			stmt.setInt(6, film.getId());
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -129,15 +137,17 @@ public class DbController {
 		ArrayList<Film> result = new ArrayList<>();
 		try {
 			Statement stmt = c.createStatement();
-			String sql = "SELECT Id, Name, Bewertung, onWatchlist FROM Film;";
+			String sql = "SELECT Id, Name, Description, Rating, Genre, onWatchlist FROM Film;";
 			stmt.execute(sql);
 			ResultSet rs = stmt.getResultSet();
 			while ( rs.next()){
 				Film neuerFilm = new Film();
 				neuerFilm.setId(rs.getInt(1));
 				neuerFilm.setName(rs.getString(2));
-				neuerFilm.setRating(rs.getInt(3));
-				neuerFilm.setOnWatchlist(rs.getBoolean(4));
+				neuerFilm.setDescription(rs.getString(3));
+				neuerFilm.setRating(rs.getInt(4));
+				neuerFilm.setGenre(rs.getString(5));
+				neuerFilm.setOnWatchlist(rs.getBoolean(6));
 				result.add(neuerFilm);
 			}
 			stmt.close();

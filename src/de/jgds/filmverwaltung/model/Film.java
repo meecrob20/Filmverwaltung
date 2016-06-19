@@ -7,6 +7,7 @@ public class Film {
 	private String name;
 	private boolean onWatchlist;
 	private String description;
+	private String genre;
 
 	@Override
 	public String toString() {
@@ -32,6 +33,10 @@ public class Film {
 	public String getDescription() {
 		return description;
 	}
+	
+	public String getGenre() {
+		return genre;
+	}
 
 	public void setRating(int rating) {
 		this.rating = rating;
@@ -48,5 +53,13 @@ public class Film {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	
 }

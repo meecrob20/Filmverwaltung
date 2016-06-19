@@ -1,6 +1,6 @@
 package de.jgds.filmverwaltung.view;
 
-import java.awt.Color;		
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,6 +19,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import de.jgds.filmverwaltung.controller.Controller;
 import de.jgds.filmverwaltung.model.Film;
+import javax.swing.JScrollPane;
 
 /**
  * 
@@ -34,12 +35,16 @@ public class MainWindow extends JFrame {
 	private JButton btnRemoveWatchlist;
 	private JButton btnAddWatchlist;
 	private JButton btnAddMovie;
+	private JScrollPane scrollPaneMovie;
+	private JScrollPane scrollPaneWatchlist;
+	private JList listMovie;
+	private JList list_Watchlist;
 
 	/**
 	 * 
 	 */
 	public MainWindow() {
-		//this.init(); //Notwendig damit der Designer die GUI anzeigt
+		//this.init(); // Notwendig damit der Designer die GUI anzeigt
 	}
 
 	/**
@@ -48,11 +53,7 @@ public class MainWindow extends JFrame {
 	public void init() {
 		setTitle("Filmverwaltung");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 987, 490);
-
-		JLabel lblName = new JLabel("Maya+David+Dannys Programm");
-		lblName.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblName.setForeground(Color.CYAN);
+		setBounds(200, 120, 1500, 800);
 
 		txtSearch = new JTextField();
 		txtSearch.setForeground(Color.LIGHT_GRAY);
@@ -63,97 +64,123 @@ public class MainWindow extends JFrame {
 		btnAddMovie.addActionListener(Controller.getInstance());
 
 		JPanel panel = new JPanel();
+
+		JLabel lblAlleFilme = new JLabel("Alle Filme");
+
+		JLabel lblWatchlist = new JLabel("Watchlist");
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(lblName))
-						.addGroup(groupLayout.createSequentialGroup().addGap(20).addComponent(txtSearch,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-				.addPreferredGap(ComponentPlacement.RELATED, 165, Short.MAX_VALUE).addComponent(btnAddMovie)
-				.addGap(36))
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE).addContainerGap()));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(11)
-						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+		groupLayout
+				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(20)
 								.addComponent(txtSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAddMovie))
-						.addGap(73).addComponent(panel, GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-						.addContainerGap()));
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 206, 206, 206 };
-		gbl_panel.rowHeights = new int[] { 277, 0 };
-		gbl_panel.columnWeights = new double[] { 1.0, 0.0, 1.0 };
-		gbl_panel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
-		panel.setLayout(gbl_panel);
+								.addPreferredGap(ComponentPlacement.RELATED, 1221, Short.MAX_VALUE)
+								.addComponent(btnAddMovie).addGap(44))
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+								.addComponent(lblAlleFilme, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE).addGap(762)
+								.addComponent(lblWatchlist, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
+								.addGap(512))
+						.addGroup(
+								groupLayout.createSequentialGroup()
+										.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(panel,
+												GroupLayout.PREFERRED_SIZE, 1464, GroupLayout.PREFERRED_SIZE)
+										.addContainerGap()));
+		groupLayout
+				.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGap(21)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(txtSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnAddMovie))
+								.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblAlleFilme, GroupLayout.PREFERRED_SIZE, 19,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblWatchlist, GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 645, GroupLayout.PREFERRED_SIZE)
+								.addContainerGap()));
 
-		ArrayList<Film> allFilms = Controller.getInstance().getAlleFilme(); 
-		ArrayList<Film> allFilmsOnWatchlist = Controller.getInstance().getAlleWatchlistFilme(); 
-		JList listMovie = new JList(allFilmsOnWatchlist.toArray());
-		GridBagConstraints gbc_listMovie = new GridBagConstraints();
-		gbc_listMovie.fill = GridBagConstraints.BOTH;
-		gbc_listMovie.insets = new Insets(0, 0, 0, 5);
-		gbc_listMovie.gridx = 0;
-		gbc_listMovie.gridy = 0;
-		panel.add(listMovie, gbc_listMovie);
+		ArrayList<Film> allFilms = Controller.getInstance().getAlleFilme();
+		ArrayList<Film> allFilmsOnWatchlist = Controller.getInstance().getAlleWatchlistFilme();
+
+		scrollPaneMovie = new JScrollPane();
+		listMovie = new JList(allFilmsOnWatchlist.toArray());
+		scrollPaneMovie.setViewportView(listMovie);
 
 		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.fill = GridBagConstraints.VERTICAL;
-		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_1.gridx = 1;
-		gbc_panel_1.gridy = 0;
-		panel.add(panel_1, gbc_panel_1);
 
 		btnAddWatchlist = new JButton("Hinzufügen zu Watchlist");
 		btnAddWatchlist.addActionListener(Controller.getInstance());
 
 		btnRemoveWatchlist = new JButton("Entfernen von Watchlist");
 		btnRemoveWatchlist.addActionListener(Controller.getInstance());
-		
-		
+
+		JButton btnDeleteMovie = new JButton("Film Löschen");
+
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addGap(43)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnAddWatchlist, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnRemoveWatchlist, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 113,
-										Short.MAX_VALUE))
-						.addContainerGap(45, Short.MAX_VALUE)));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup().addGap(75)
-						.addComponent(btnAddWatchlist, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(btnRemoveWatchlist, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-						.addGap(126)));
+		gl_panel_1
+				.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup().addGap(27)
+								.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panel_1.createSequentialGroup().addComponent(
+												btnAddWatchlist, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE).addGap(
+														33))
+										.addGroup(gl_panel_1.createSequentialGroup()
+												.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING, false)
+														.addComponent(btnDeleteMovie, Alignment.LEADING,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+																Short.MAX_VALUE)
+														.addComponent(btnRemoveWatchlist, Alignment.LEADING,
+																GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+												.addContainerGap()))));
+		gl_panel_1
+				.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup().addGap(75)
+								.addComponent(btnAddWatchlist, GroupLayout.PREFERRED_SIZE, 32,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(btnRemoveWatchlist, GroupLayout.PREFERRED_SIZE, 33,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(300).addComponent(btnDeleteMovie, GroupLayout.PREFERRED_SIZE, 31,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(163)));
 		panel_1.setLayout(gl_panel_1);
 
-		JList list_Watchlist = new JList(allFilms.toArray());
-		GridBagConstraints gbc_list_Watchlist = new GridBagConstraints();
-		gbc_list_Watchlist.fill = GridBagConstraints.BOTH;
-		gbc_list_Watchlist.gridx = 2;
-		gbc_list_Watchlist.gridy = 0;
-		panel.add(list_Watchlist, gbc_list_Watchlist);
+		scrollPaneWatchlist = new JScrollPane();
+
+		list_Watchlist = new JList(allFilms.toArray());
+		scrollPaneWatchlist.setViewportView(list_Watchlist);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+				gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+								.addComponent(scrollPaneMovie, GroupLayout.PREFERRED_SIZE, 608,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(scrollPaneWatchlist, GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addComponent(panel_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+				.addComponent(scrollPaneMovie, GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+				.addComponent(scrollPaneWatchlist, GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE));
+		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
 
 		setVisible(true);
 
-		
 	}
 
-	
-	
 	/**
 	 * 
 	 * @return
 	 */
-	public JButton getBtnRemoveWatchlist(){
+	public JButton getBtnRemoveWatchlist() {
 		return btnRemoveWatchlist;
 	}
+
 	/**
 	 * 
 	 * @return
@@ -161,9 +188,7 @@ public class MainWindow extends JFrame {
 	public JButton getBtnAddMovie() {
 		return btnAddMovie;
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * @return
@@ -180,5 +205,11 @@ public class MainWindow extends JFrame {
 		return txtSearch;
 	}
 
+	public void setListMovie(JList allMovies) {
+		this.listMovie = allMovies;
+	}
 
+	public void setList_Watchlist(JList watchlist) {
+		this.list_Watchlist = watchlist;
+	}
 }///////////////////////////

@@ -33,6 +33,11 @@ public class AddMovieDialog extends JDialog {
 	private JComboBox<String> cbGenre;
 	private JRadioButton rdbtnYes;
 	private JRadioButton rdbtnNo;
+	private JRadioButton rdbtnRating_1;
+	private JRadioButton rdbtnRating_2;
+	private JRadioButton rdbtnRating_3;
+	private JRadioButton rdbtnRating_4;
+	private JRadioButton rdbtnRating_5;
 	
 
 	
@@ -125,20 +130,20 @@ public class AddMovieDialog extends JDialog {
 		JPanel panel_2 = new JPanel();
 		panel_1.add(panel_2);
 
-		JRadioButton rdbtnRating_1 = new JRadioButton("1");
+		rdbtnRating_1 = new JRadioButton("1");
 		rdbtnRating_1.setSelected(true);
 		bgRating.add(rdbtnRating_1);
 
-		JRadioButton rdbtnRating_2 = new JRadioButton("2");
+		rdbtnRating_2 = new JRadioButton("2");
 		bgRating.add(rdbtnRating_2);
 
-		JRadioButton rdbtnRating_3 = new JRadioButton("3");
+		rdbtnRating_3 = new JRadioButton("3");
 		bgRating.add(rdbtnRating_3);
 
-		JRadioButton rdbtnRating_4 = new JRadioButton("4");
+		rdbtnRating_4 = new JRadioButton("4");
 		bgRating.add(rdbtnRating_4);
 
-		JRadioButton rdbtnRating_5 = new JRadioButton("5");
+		rdbtnRating_5 = new JRadioButton("5");
 		bgRating.add(rdbtnRating_5);
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
@@ -231,10 +236,21 @@ public class AddMovieDialog extends JDialog {
 		return this.taDescription.getText();
 	}
 	
-	public String getRating() {
+	public int getRating() {
+		if (rdbtnRating_1.isSelected()){
+			return Integer.parseInt("1");
+		}else if (rdbtnRating_2.isSelected()){
+			return Integer.parseInt("2");
+		}else if (rdbtnRating_3.isSelected()){
+			return Integer.parseInt("3");
+		}else if (rdbtnRating_4.isSelected()){
+			return Integer.parseInt("4");
+		}else if (rdbtnRating_5.isSelected()){
+			return Integer.parseInt("5");
+		}else {
+			return 0;
+		}
 		
-		
-		return "rating(1-5)";
 	}
 	
 public String getGenre(){
@@ -247,7 +263,7 @@ public String getGenre(){
 
 public boolean getSeen(){
 	
-	if (this.bgYN.getSelection().equals(this.rdbtnYes)){
+	if (rdbtnYes.isSelected()){
 		return true;
 	} else {
 		return false;
