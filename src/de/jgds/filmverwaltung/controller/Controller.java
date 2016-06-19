@@ -78,7 +78,12 @@ public class Controller implements ActionListener {
 	}
 
 	private void addMovie() {
-		System.out.println("Film wird hinzugefügt");
+		System.out.println("Titel: " + dialog.getTitel());
+		System.out.println("Beschreibung: " + dialog.getDescription());
+		System.out.println("Bewertung: " + dialog.getRating());
+		System.out.println("Genre: " + dialog.getGenre());
+		System.out.println("Gesehen? " + dialog.getSeen());
+	
 	}
 
 	/**
@@ -100,6 +105,7 @@ public class Controller implements ActionListener {
 	 */
 	private void openAddMovieDialog() {
 	dialog = new AddMovieDialog(this);
+	dialog.setVisible(true);
 	}
 
 	public ArrayList<Film> getAlleFilme() {

@@ -3,9 +3,10 @@ package de.jgds.filmverwaltung.model;
 public class Film {
 
 	private int id;
-	private int bewertung;
+	private int rating;
 	private String name;
 	private boolean onWatchlist;
+	private String description;
 
 	@Override
 	public String toString() {
@@ -20,16 +21,20 @@ public class Film {
 		return id;
 	}
 
-	public int getBewertung() {
-		return bewertung;
+	public int getRating() {
+		return rating;
 	}
 
 	public String getName() {
 		return name;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
 
-	public void setBewertung(int bewertung) {
-		this.bewertung = bewertung;
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	public void setName(String name) {

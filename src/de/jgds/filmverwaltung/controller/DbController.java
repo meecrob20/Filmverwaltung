@@ -41,7 +41,7 @@ public class DbController {
 				String sql = "CREATE TABLE Film " 
 						+ "(Id INTEGER PRIMARY KEY AUTOINCREMENT    NOT NULL,"
 						+ " Name           TEXT    NOT NULL, " 
-						+ " Bewertung            INT     NOT NULL,"
+						+ " Rating           INT     NOT NULL,"
 						+ " onWatchlist		BOOLEAN		NOT NULL)";
 				stmt.executeUpdate(sql);
 				stmt.close();
@@ -71,7 +71,7 @@ public class DbController {
 		DbController dbc = DbController.getInstance();
 		Film f = new Film();
 		f.setName("Test Film");
-		f.setBewertung(1);
+		f.setRating(1);
 		f.setOnWatchlist(true);;
 		dbc.createFilm(f);
 		for (Film film : dbc.getAlleFilme()){
@@ -85,7 +85,7 @@ public class DbController {
 			PreparedStatement stmt = c.prepareStatement(sql);
 			//ID soll von der Datenbank generiert werden
 			stmt.setString(1, neuerFilm.getName());
-			stmt.setInt(2, neuerFilm.getBewertung());
+			stmt.setInt(2, neuerFilm.getRating());
 			stmt.setBoolean(3, neuerFilm.isOnWatchlist());
 			stmt.executeUpdate();
 			stmt.close();
@@ -101,7 +101,7 @@ public class DbController {
 			PreparedStatement stmt = c.prepareStatement(sql);
 			//ID soll von der Datenbank generiert werden
 			stmt.setString(1, film.getName());
-			stmt.setInt(2, film.getBewertung());
+			stmt.setInt(2, film.getRating());
 			stmt.setBoolean(3, film.isOnWatchlist());
 			stmt.setInt(4, film.getId());
 			stmt.executeUpdate();
@@ -112,6 +112,19 @@ public class DbController {
 
 	}
 	
+	public void deleteFilm(Film film){
+        try {
+            String sql = "DELETE FROM Film WHERE ID = ?;";
+            PreparedStatement stmt = c.prepareStatement(sql);
+            stmt.setInt(1, film.getId());
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 	public ArrayList<Film> getAlleFilme(){
 		ArrayList<Film> result = new ArrayList<>();
 		try {
@@ -123,7 +136,7 @@ public class DbController {
 				Film neuerFilm = new Film();
 				neuerFilm.setId(rs.getInt(1));
 				neuerFilm.setName(rs.getString(2));
-				neuerFilm.setBewertung(rs.getInt(3));
+				neuerFilm.setRating(rs.getInt(3));
 				neuerFilm.setOnWatchlist(rs.getBoolean(4));
 				result.add(neuerFilm);
 			}

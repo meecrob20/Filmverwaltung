@@ -13,13 +13,11 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
-import java.awt.Cursor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
 
 /**
  * @author Danny
@@ -29,9 +27,12 @@ public class AddMovieDialog extends JDialog {
 	private Controller controller;
 	private JTextField txtTitel;
 	private JTextArea taDescription;
-	private final ButtonGroup buttonGroupRating = new ButtonGroup();
-	private final ButtonGroup buttonGroupYN = new ButtonGroup();
+	private final ButtonGroup bgRating = new ButtonGroup();
+	private final ButtonGroup bgYN = new ButtonGroup();
 	private JButton btnAddMovie;
+	private JComboBox<String> cbGenre;
+	private JRadioButton rdbtnYes;
+	private JRadioButton rdbtnNo;
 	
 
 	
@@ -125,19 +126,20 @@ public class AddMovieDialog extends JDialog {
 		panel_1.add(panel_2);
 
 		JRadioButton rdbtnRating_1 = new JRadioButton("1");
-		buttonGroupRating.add(rdbtnRating_1);
+		rdbtnRating_1.setSelected(true);
+		bgRating.add(rdbtnRating_1);
 
 		JRadioButton rdbtnRating_2 = new JRadioButton("2");
-		buttonGroupRating.add(rdbtnRating_2);
+		bgRating.add(rdbtnRating_2);
 
 		JRadioButton rdbtnRating_3 = new JRadioButton("3");
-		buttonGroupRating.add(rdbtnRating_3);
+		bgRating.add(rdbtnRating_3);
 
 		JRadioButton rdbtnRating_4 = new JRadioButton("4");
-		buttonGroupRating.add(rdbtnRating_4);
+		bgRating.add(rdbtnRating_4);
 
 		JRadioButton rdbtnRating_5 = new JRadioButton("5");
-		buttonGroupRating.add(rdbtnRating_5);
+		bgRating.add(rdbtnRating_5);
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup().addContainerGap().addComponent(rdbtnRating_1).addGap(5)
@@ -154,26 +156,46 @@ public class AddMovieDialog extends JDialog {
 
 		JPanel panel_5 = new JPanel();
 		panel_1.add(panel_5);
+		
+		cbGenre = new JComboBox<String>();
+		cbGenre.addItem("Action");
+		cbGenre.addItem("Adventure");
+		cbGenre.addItem("Comedy");
+		cbGenre.addItem("Crime");
+		cbGenre.addItem("Drama");
+		cbGenre.addItem("Fantasy");
+		cbGenre.addItem("Horror");
+		cbGenre.addItem("Science Fiction");
+		cbGenre.addItem("Thriller");
+		cbGenre.addItem("War");
+		cbGenre.addItem("Western");
+		
 		GroupLayout gl_panel_5 = new GroupLayout(panel_5);
 		gl_panel_5.setHorizontalGroup(
 			gl_panel_5.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 323, Short.MAX_VALUE)
+				.addGroup(gl_panel_5.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(cbGenre, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(188, Short.MAX_VALUE))
 		);
 		gl_panel_5.setVerticalGroup(
 			gl_panel_5.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 126, Short.MAX_VALUE)
+				.addGroup(gl_panel_5.createSequentialGroup()
+					.addGap(49)
+					.addComponent(cbGenre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(57, Short.MAX_VALUE))
 		);
 		panel_5.setLayout(gl_panel_5);
 
 		JPanel panel_6 = new JPanel();
 		panel_1.add(panel_6);
 
-		JRadioButton rdbtnYes = new JRadioButton("Ja");
-		buttonGroupYN.add(rdbtnYes);
+		rdbtnYes = new JRadioButton("Ja");
+		bgYN.add(rdbtnYes);
 
-		JRadioButton rdbtnNo = new JRadioButton("Nein");
+		rdbtnNo = new JRadioButton("Nein");
 		rdbtnNo.setSelected(true);
-		buttonGroupYN.add(rdbtnNo);
+		bgYN.add(rdbtnNo);
 		GroupLayout gl_panel_6 = new GroupLayout(panel_6);
 		gl_panel_6.setHorizontalGroup(gl_panel_6.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_6.createSequentialGroup().addComponent(rdbtnYes).addGap(27).addComponent(rdbtnNo)
@@ -192,18 +214,16 @@ public class AddMovieDialog extends JDialog {
 		getContentPane().add(btnAddMovie, BorderLayout.SOUTH);
 		setResizable(false);
 		setModal(true);
-		setVisible(true);
+		
 	
 	}
 	
+	
 	public JButton getBtnAddMovie(){
-		
 		return this.btnAddMovie;
 	}
 	
-	
 	public String getTitel() {
-		
 		return this.txtTitel.getText();
 	}
 	 
@@ -213,9 +233,26 @@ public class AddMovieDialog extends JDialog {
 	
 	public String getRating() {
 		
-	ButtonModel rating = this.buttonGroupRating.getSelection();
-	String sRating = rating.toString();
-	return sRating;
+		
+		return "rating(1-5)";
 	}
 	
+public String getGenre(){
+		
+		String selectedItem = cbGenre.getSelectedItem().toString();
+		
+		return selectedItem;
+		
+	}
+
+public boolean getSeen(){
+	
+	if (this.bgYN.getSelection().equals(this.rdbtnYes)){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
 }//////////////////////////////////////

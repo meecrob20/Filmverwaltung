@@ -108,7 +108,7 @@ public class MainWindow extends JFrame {
 		gbc_panel_1.gridy = 0;
 		panel.add(panel_1, gbc_panel_1);
 
-		btnAddWatchlist = new JButton("Hinzuf\u00FCgen Watchlist");
+		btnAddWatchlist = new JButton("Hinzufügen zu Watchlist");
 		btnAddWatchlist.addActionListener(Controller.getInstance());
 
 		btnRemoveWatchlist = new JButton("Entfernen von Watchlist");
