@@ -1,6 +1,7 @@
 package de.jgds.filmverwaltung.view;
 
 import javax.swing.JDialog;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
@@ -21,17 +22,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 
 /**
- * Klasse des AddMovie Dialogs.
+ * Klasse des EditMovie Dialogs.
+ * 
  * @author Lopes, Maya, Jäger
  *
  */
-public class AddMovieDialog extends JDialog {
+public class EditMovieDialog extends JDialog {
+
 	private Controller controller;
 	private JTextField txtTitel;
 	private JTextArea taDescription;
 	private final ButtonGroup bgRating = new ButtonGroup();
 	private final ButtonGroup bgYN = new ButtonGroup();
-	private JButton btnAddMovie;
+	private JButton btnEditMovie;
 	private JComboBox<String> cbGenre;
 	private JRadioButton rdbtnYes;
 	private JRadioButton rdbtnNo;
@@ -41,34 +44,36 @@ public class AddMovieDialog extends JDialog {
 	private JRadioButton rdbtnRating_4;
 	private JRadioButton rdbtnRating_5;
 
-	
 	/**
-	 * Standardkonstruktor des AddMovieDialogs.
+	 * Standardkonstruktor des EditMovieDialogs.
 	 */
-	public AddMovieDialog(){
-		
+	public EditMovieDialog() {
+
 	}
-	
+
 	/**
-	 * Konstrukter des AddMovie Dialogs.
-	 * @param controller Objekt des Controllers
+	 * Konstrukter des EditMovie Dialogs.
+	 * 
+	 * @param controller
+	 *            Objekt des Controllers
 	 */
-	public AddMovieDialog(Controller controller) {
+	public EditMovieDialog(Controller controller) {
 
 		this.controller = controller;
 
 		init();
 
 	}
-/**
- * Initialisiert und erstellt die Komponenten des Dialogfensters.
- */
+
+	/**
+	 * Initialisiert und erstellt die Komponenten des Dialogfensters.
+	 */
 	private void init() {
-		setTitle("Filme Hinzufügen");
+		setTitle("Film Bearbeiten/Details");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(700, 200, 400, 700);
 
-		JLabel lblAddMovie = new JLabel("Füge einen Film hinzu");
+		JLabel lblAddMovie = new JLabel("Bearbeite die Infos des Filmes oder schau dir die Details an");
 		getContentPane().add(lblAddMovie, BorderLayout.NORTH);
 
 		JPanel panel = new JPanel();
@@ -167,7 +172,7 @@ public class AddMovieDialog extends JDialog {
 
 		JPanel panel_5 = new JPanel();
 		panel_1.add(panel_5);
-		
+
 		cbGenre = new JComboBox<String>();
 		cbGenre.addItem("Action");
 		cbGenre.addItem("Adventure");
@@ -180,22 +185,17 @@ public class AddMovieDialog extends JDialog {
 		cbGenre.addItem("Thriller");
 		cbGenre.addItem("War");
 		cbGenre.addItem("Western");
-		
+
 		GroupLayout gl_panel_5 = new GroupLayout(panel_5);
-		gl_panel_5.setHorizontalGroup(
-			gl_panel_5.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_5.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(cbGenre, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(188, Short.MAX_VALUE))
-		);
-		gl_panel_5.setVerticalGroup(
-			gl_panel_5.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_5.createSequentialGroup()
-					.addGap(49)
-					.addComponent(cbGenre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(57, Short.MAX_VALUE))
-		);
+		gl_panel_5.setHorizontalGroup(gl_panel_5.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_5.createSequentialGroup().addContainerGap()
+						.addComponent(cbGenre, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(188, Short.MAX_VALUE)));
+		gl_panel_5.setVerticalGroup(gl_panel_5.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_5
+						.createSequentialGroup().addGap(49).addComponent(cbGenre, GroupLayout.PREFERRED_SIZE,
+								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(57, Short.MAX_VALUE)));
 		panel_5.setLayout(gl_panel_5);
 
 		JPanel panel_6 = new JPanel();
@@ -219,83 +219,156 @@ public class AddMovieDialog extends JDialog {
 								.addContainerGap(52, Short.MAX_VALUE)));
 		panel_6.setLayout(gl_panel_6);
 
-		btnAddMovie = new JButton("Film Hinzufügen");
-		btnAddMovie.addActionListener(Controller.getInstance());
-		
-		getContentPane().add(btnAddMovie, BorderLayout.SOUTH);
+		btnEditMovie = new JButton("Film Aktualisieren");
+		btnEditMovie.addActionListener(Controller.getInstance());
+
+		getContentPane().add(btnEditMovie, BorderLayout.SOUTH);
 		setResizable(false);
 		setModal(true);
-		
-	
+
 	}
-	
+
 	/**
 	 * Gibt den AddMovie Button zurück.
+	 * 
 	 * @return Button AddMovie
 	 */
-	public JButton getBtnAddMovie(){	
-		return this.btnAddMovie;	
+	public JButton getBtnEditMovie() {
+		return this.btnEditMovie;
 	}
-	
+
 	/**
 	 * Gibt den Titel des Filmes wieder.
+	 * 
 	 * @return Titel des Filmes
 	 */
 	public String getTitel() {
 		return this.txtTitel.getText();
 	}
+
 	/**
 	 * Gibt die Beschreibung des Filmes wieder.
+	 * 
 	 * @return Beschreibung des Filmes
 	 */
-	public String getDescription(){
+	public String getDescription() {
 		return this.taDescription.getText();
 	}
-	
+
 	/**
 	 * Gibt die Bewertung des Filmes wieder.
+	 * 
 	 * @return Bewertung des Filmes
 	 */
 	public int getRating() {
-		if (rdbtnRating_1.isSelected()){
+		if (rdbtnRating_1.isSelected()) {
 			return Integer.parseInt("1");
-		}else if (rdbtnRating_2.isSelected()){
+		} else if (rdbtnRating_2.isSelected()) {
 			return Integer.parseInt("2");
-		}else if (rdbtnRating_3.isSelected()){
+		} else if (rdbtnRating_3.isSelected()) {
 			return Integer.parseInt("3");
-		}else if (rdbtnRating_4.isSelected()){
+		} else if (rdbtnRating_4.isSelected()) {
 			return Integer.parseInt("4");
-		}else if (rdbtnRating_5.isSelected()){
+		} else if (rdbtnRating_5.isSelected()) {
 			return Integer.parseInt("5");
-		}else {
+		} else {
 			return 0;
 		}
-		
+
 	}
+
 	/**
 	 * Gibt das Genre des Filmes wieder.
+	 * 
 	 * @return genre des Filmes
 	 */
-public String getGenre(){
-		
+	public String getGenre() {
+
 		String selectedItem = cbGenre.getSelectedItem().toString();
-		
+
 		return selectedItem;
-		
+
 	}
 
-/**
- * Überprüft ob der Film gesehen wurde.
- * @return false wenn der Film schon gesehen wurde, true wenn nicht
- */
-public boolean getSeen(){
-	
-	if (rdbtnYes.isSelected()){
-		return false;
-	} else {
-		return true;
+	/**
+	 * Gibt wieder ob der Film gesehen wurde oder nicht.
+	 * 
+	 * @return Wahrheitswert
+	 */
+	public boolean getSeen() {
+
+		if (rdbtnYes.isSelected()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-}
 
+	/**
+	 * Setzt den Titel des Filmes.
+	 * 
+	 * @param titel
+	 *            Titel des Filmes
+	 */
+	public void setTitel(String titel) {
+		this.txtTitel.setText(titel);
+	}
 
-}//////////////////////////////////////
+	/**
+	 * Setzt die Beschreibung des Filmes.
+	 * 
+	 * @param des
+	 *            Beschreibung
+	 */
+	public void setDescription(String des) {
+		this.taDescription.setText(des);
+	}
+
+	/**
+	 * Setzt die Bewertung des Filmes.
+	 * 
+	 * @param rating
+	 *            Bewertung
+	 */
+	public void setRating(int rating) {
+		if (rating == 1) {
+			this.rdbtnRating_1.setSelected(true);
+		} else if (rating == 2) {
+			this.rdbtnRating_2.setSelected(true);
+		} else if (rating == 3) {
+			this.rdbtnRating_3.setSelected(true);
+		} else if (rating == 4) {
+			this.rdbtnRating_4.setSelected(true);
+		} else if (rating == 5) {
+			this.rdbtnRating_5.setSelected(true);
+		} else {
+			System.out.println("Nix rating");
+		}
+	}
+
+	/**
+	 * Setzt das Genre des Filmes auf übergebenen wert.
+	 * 
+	 * @param genre
+	 *            Genre des Filmes
+	 */
+	public void setGenre(String genre) {
+		this.cbGenre.setSelectedItem(genre);
+	}
+
+	/**
+	 * Setzt den Radiobutton für wenn der Film gesehen wurde auf Ja, sosnt auf
+	 * Nein.
+	 * 
+	 * @param x
+	 *            Wahrheitswert ob der Film gesehen wurde oder nicht
+	 */
+	public void setSeen(boolean x) {
+		if(x == false){
+			this.rdbtnYes.setSelected(true);
+		} else{
+			this.rdbtnNo.setSelected(true);
+		}
+	}
+
+}///////////////////////////////////////////////////////////////

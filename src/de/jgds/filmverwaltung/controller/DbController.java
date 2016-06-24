@@ -10,22 +10,40 @@ import java.util.ArrayList;
 
 import de.jgds.filmverwaltung.model.Film;
 
+/**
+ * Der DbController erstellt die verbindung zur Datenbank und enthält die essenziellen	
+ * SQL Befehle.
+ * 
+ * @author Lopes, Maya, Jäger
+ *
+ */
 public class DbController {
-	private static DbController instance;
 
+	private static DbController instance;
 	private Connection c = null;
 
-	public static DbController getInstance() {
+	/**
+	 * Konstruktor von DbController welcher die Methode initDBConnection ausführt.
+	 */
+	private DbController() {
+		initDBConnection();
+	}
+	/**
+	 * Diese Methode stellt sicher dass nur ein 'DbController' Objekt existiert.
+	 * 
+	 * @return ein DbController Objekt das entweder schon existierte oder erzeugt
+	 *         wurde
+	 */
+public static DbController getInstance() {
 		if (instance == null) {
 			instance = new DbController();
 		}
 		return instance;
 	}
 
-	private DbController() {
-		initDBConnection();
-	}
-
+/**
+ * Initialisiert die Verbindung mit der Datenbank und erzeugt selbige mitsamt Tabelle.
+ */
 	private void initDBConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -38,11 +56,10 @@ public class DbController {
 		try {
 			if (!tableExists("Film")) {
 				Statement stmt = c.createStatement();
-				String sql = "CREATE TABLE Film " 
-						+ "(Id INTEGER PRIMARY KEY AUTOINCREMENT    NOT NULL,"
-						+ " Name           TEXT    NOT NULL, " 
+				String sql = "CREATE TABLE Film " + "(Id INTEGER PRIMARY KEY AUTOINCREMENT    NOT NULL,"
+						+ " Name           TEXT    NOT NULL, "
 						+ " Description		TEXT	NOT NULL, "
-						+ " Rating           INT     NOT NULL,"
+						+ " Rating           INT     NOT NULL," 
 						+ " Genre			TEXT	NOT NULL, "
 						+ " onWatchlist		BOOLEAN		NOT NULL)";
 				stmt.executeUpdate(sql);
@@ -54,6 +71,11 @@ public class DbController {
 		}
 	}
 
+	/**
+	 * Überprüft ob eine Tabelle schon existiert.
+	 * @param tableName Name der zu überprüfenden Tabelle
+	 * @return Wahrheitswert ob die Tabelle schon existiert oder nicht
+	 */
 	private boolean tableExists(String tableName) {
 		boolean result = false;
 		try {
@@ -61,33 +83,40 @@ public class DbController {
 			String sql = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
 			stmt.execute(sql);
 			ResultSet rs = stmt.getResultSet();
-				result = (rs.getInt(1)==1);
+			result = (rs.getInt(1) == 1);
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-
+/*
+	//zum testen der Datenbank
+	
 	public static void main(String[] args) {
 		DbController dbc = DbController.getInstance();
 		Film f = new Film();
 		f.setName("Test Film");
 		f.setDescription("TEST");
 		f.setRating(1);
-		f.setGenre("TESTTTT");
+		f.setGenre("Action");
 		f.setOnWatchlist(true);
 		dbc.createFilm(f);
-		for (Film film : dbc.getAlleFilme()){
+		for (Film film : dbc.getAlleFilme()) {
 			System.out.println(film);
 		}
 	}
-	
-	public void createFilm(Film neuerFilm){
+	*/
+
+	/**
+	 * Methode mit dem SQL Befehl zum Hinzufügen eines neuen Filmes.
+	 * @param neuerFilm Film der Hinzugefügt werden soll
+	 */
+	public void createFilm(Film neuerFilm) {
 		try {
 			String sql = "INSERT INTO Film (Name, Description, Rating, Genre, onWatchlist) VALUES (?, ?, ?, ?, ?);";
 			PreparedStatement stmt = c.prepareStatement(sql);
-			//ID soll von der Datenbank generiert werden
+			// ID soll von der Datenbank generiert werden
 			stmt.setString(1, neuerFilm.getName());
 			stmt.setString(2, neuerFilm.getDescription());
 			stmt.setInt(3, neuerFilm.getRating());
@@ -100,12 +129,16 @@ public class DbController {
 		}
 
 	}
-	
-	public void updateFilm(Film film){
+
+	/**
+	 * Methode mit dem SQL Befehl zum aktualisieren eines Filmes.
+	 * @param film der zu aktualisierende Film
+	 */
+	public void updateFilm(Film film) {
 		try {
 			String sql = "UPDATE Film SET Name=?, Description=?, Rating=?, Genre=?, onWatchlist=? WHERE ID = ?;";
 			PreparedStatement stmt = c.prepareStatement(sql);
-			//ID soll von der Datenbank generiert werden
+			// ID soll von der Datenbank generiert werden
 			stmt.setString(1, film.getName());
 			stmt.setString(2, film.getDescription());
 			stmt.setInt(3, film.getRating());
@@ -119,28 +152,36 @@ public class DbController {
 		}
 
 	}
-	
-	public void deleteFilm(Film film){
-        try {
-            String sql = "DELETE FROM Film WHERE ID = ?;";
-            PreparedStatement stmt = c.prepareStatement(sql);
-            stmt.setInt(1, film.getId());
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-    }
+	/**
+	 * Methode mit dem SQL Befehl zum Löschen eines Filmes.
+	 * @param film der zu löschende Film
+	 */
+	public void deleteFilm(Film film) {
+		try {
+			String sql = "DELETE FROM Film WHERE ID = ?;";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, film.getId());
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	public ArrayList<Film> getAlleFilme(){
+	}
+
+	/**
+	 * Methode mit dem SQL Befehl um alle Filme der Datenbank zu bekommen.
+	 * @return alle Filme + Atribute in der Datenbank
+	 */
+	public ArrayList<Film> getAlleFilme() {
 		ArrayList<Film> result = new ArrayList<>();
 		try {
 			Statement stmt = c.createStatement();
 			String sql = "SELECT Id, Name, Description, Rating, Genre, onWatchlist FROM Film;";
 			stmt.execute(sql);
 			ResultSet rs = stmt.getResultSet();
-			while ( rs.next()){
+			while (rs.next()) {
 				Film neuerFilm = new Film();
 				neuerFilm.setId(rs.getInt(1));
 				neuerFilm.setName(rs.getString(2));
